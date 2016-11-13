@@ -1,0 +1,822 @@
+<html>
+	<head>
+		<title>More Info</title>		
+		<!-- links jQuery library -->
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>		
+		<link rel="shortcut icon" href="favicon.ico">
+		<!-- end jQuery -->		
+		<style type="text/CSS" > 
+		body{ background-color:#f0f0f0; }
+		table{width:90%; min-width:500px; margin:0px auto; border:2px solid black; border-collapse:collapse;} 
+        td{padding:5px;} 
+		tr{border:1px solid black;}
+		.def{background-color:#d8d8d8;}
+		.alt{ background-color:white;}
+		th{color:white; background-color:black;}
+        </style>		
+		<script> $( function(){ $( "#tabs" ).tabs(); }); </script>
+		<noscript><h1 style="color:red;">Please enable JavaScript</h1></noscript>
+		
+	</head>
+	<body>
+		<h2 style="text-align:center;"><u>&spades;&hearts;&diams;&clubs; Blackjack! &clubs;&diams;&hearts;&spades;</u>
+		<br /> Technical Documentation</h2>
+		<div id="tabs">
+			<ol>
+				<li><a href="#Pseudocode">Pseudocode</a></li>
+				<li><a href="#DataDct">Data Dictionary</a></li>
+				<li><a href="#Classes">Classes and Methods</a></li>		
+		    </ol>
+								<!-- the <pre> tag displays text exactly as it was entered, so everything needs to -->
+		    <div id="Pseudocode"> <!--  be up against the side or else it will show up with a bunch of random tabs   -->
+<pre style="margin: 0px auto; width:50%;">
+<hr /><b>clsMenu</b><hr />
+		<u>main</u>
+BEGIN
+	loop while (true)
+		switch, (run Menu() then use returned int value)
+			case(1)
+				run clsGame.main()
+				break switch
+			case(2)
+				run Help()
+				break switch
+			case(3)
+				run Info()
+				break switch
+			case(4)
+				print (ask if sure)
+				if user input = "y" 
+					break loop 
+				else
+					break switch			
+END
+
+		<u>Menu</u>
+BEGIN
+	prints menu display
+	loop while (true)
+		print (asks for input)
+		save user input to tmpReturn
+			if tmpReturn is a number
+				if tmpReturn is between lower and higher bounds 
+					return tmpReturn
+				else
+					print (error message)
+			else
+				print (error message)
+END
+
+		<u>Help</u>
+BEGIN
+	try
+		declare fisHelp using help txt file  
+		declare reader using fisHelp
+		save number of chars in reader to intPos
+		loop while (intPos has values left)
+			add char at position intPos of reader to strContent
+			save new size of reader to intPos
+		close fisHelp
+	catch exception
+		print (exception)
+	print (strContent)
+	print (ask to continue)
+	user input
+END
+
+		<u>Info</u>
+BEGIN
+	if can open user's web browser
+		try
+			open web browser with info html file
+			print (browser opened message)
+		catch exception
+			print (exception)
+	else
+		print (cannot open error)
+END
+
+
+<hr /><b>clsGame </b><hr />
+		<u>main</u>
+BEGIN
+	set player chips
+	loop while true
+		run Bet()
+		run FirstPlay()
+		if chips = 0
+			print (game over message)
+			break loop
+		print (play again message)
+		if user input = "n"
+			break loop
+END
+
+		<u>Bet</u>
+BEGIN
+	print (bet screen)
+	loop for (bet=0,  bet < 1, print(ask for user input))
+		save user input to tmpHold
+		if tmpHold > chips
+			print (not enough chips message)
+		else
+			if tmpHold is within bounds
+				tmpHold = bet
+				break loop
+			else
+				print (bet out of bounds message)
+END
+
+		<u>FirstPlay</u>
+BEGIN
+	run DealPlayer()
+	run DealPlayer()
+	run DealDealer()
+	tmpPlayerTotal = min & max player cards
+	if min & max player cards are same
+		tmpPlayerTotal = min player cards
+	if min/max player cards = 21
+		print (blackjack message)
+		run FinalPlay(1)
+		return 
+	print (player options display)
+	print (ask for user input)
+	loop while (true)
+		tmpHold = user input
+		switch (tmpHold)
+			case(1)
+				DealPlayer()
+				SecondPlay()
+				break loop
+			case(2)
+				DealDealer()
+				SecondPlay()
+				break loop
+			case(3)
+				Double()
+				break loop
+			default
+				print (entry outside bounds error message)		
+END
+		
+		<u>SecondPlay</u>
+BEGIN
+	loop while (true)
+		tmpPlayerTotal = min & max player cards
+		if min & max player cards are same
+			tmpPlayerTotal = min player cards
+		if min/max player cards > 21
+			print (bust message)
+			run FinalPlay()
+			break loop
+		print(user options display)
+		print (ask for user input)
+		loop while (true)
+			tmpHold = user input
+			switch (tmpHold)
+				case(1)
+					DealPlayer()
+					break 2nd loop
+				case(2)
+					DealerPlay()
+					FinalPlay()
+					break 1st loop
+				default
+					print(user entry outside bounds error message)
+END
+		
+		<u>DealerPlay</u>
+BEGIN
+	loop while (true)
+		if dealer max cards < 17
+			run DealDealer()
+		else if dealer max cards > 21
+			if dealer min cards < 17
+				run DealDealer()
+			else
+				break loop
+		else
+			break loop
+	tmpPlayerTotal = min & max player cards
+	if min & max player cards are same
+		tmpPlayerTotal = min player cards	
+	print (User options display)
+END
+		
+		<u>FinalPlay</u>
+BEGIN
+	if Blackjack = 1
+		tmpWinner = win message
+		chips =+ (bet * 2) + (bet / 2) 
+	else if Blackjack = 2
+		tmpWinner = lose message
+		chips =- bet
+	else
+		tmp = (run Winner())
+	print (winner message)
+END
+		
+		<u>Winner</u>
+BEGIN
+	tmpWinner = error message
+	if player min cards > 21
+		if player max cards > 21
+			tmpWinner = (run Lose())
+		else if dealer max cards > 21
+			if dealer min cards > 21
+				tmpWinner = (run Win())
+			if player min cards > 21
+				tmpWinner = (run Lose())
+			else if player and dealer min cards are equal
+				tmpWinner = (run Draw())
+			else if player min cards > dealer min cards
+				tmpWinner = (run Win())
+			else if player min cards < dealer min cards
+				tmpWinner = (run Lose())
+		else if player max cards = player max cards
+			tmpWinner = (run Draw())
+		else if player max cards > dealer max cards
+			tmpWinner = (run Win())
+		else if player max cards < dealer max cards
+			tmpWinner = (run Lose())
+	else if dealer max cards > 21
+		if dealer max cards > 21
+			tmpWinner = (run Win())
+		else if player max cards > 21
+			if player min cards >21
+				tmpWinner = (run Lose())
+			else if dealer min cards > 21
+				tmpWinner = (run Lose())
+			else if player and dealer min cards are equal
+				tmpWinner = (run Draw())
+			else if player min cards < dealer min cards
+				tmpWinner = (run Lose())
+			else if player min cards > dealer min cards
+				tmpWinner = (run Win())
+		else if player min cards = dealer max cards
+			tmpWinner = (run Draw())
+		else if player min cards > dealer max cards
+			tmpWinner = (run Win())
+		else if player min cards < dealer max cards
+			tmpWinner = (run Lose())
+	return tmpWinner
+END
+		
+		<u>Win</u>
+BEGIN
+	chips =+ bet * 2
+	return win message
+END
+		
+		<u>Lose</u>
+BEGIN
+	chips =- bet
+	return lose message
+END
+		
+		<u>Draw</u>
+BEGIN
+	return draw message
+END
+		
+		<u>Double</u>
+BEGIN
+	bet = bet * 2
+	run DealPlayer()
+	tmpPlayerTotal = min & max player cards
+	if min & max player cards are same
+		tmpPlayerTotal = min player cards
+	if player min cards > 21
+		print (bust message)
+		run FinalPlay(2)
+	else
+		run DealerPlay()
+		run FinalPlay(0)
+END
+		
+		<u>DealPlayer</u>
+BEGIN
+	tmpHold = random number
+	switch (tmpHold)
+		case(1)
+			player current cards =+ "A "
+			player min cards =+ 1
+			player max cards =+ 1
+			break
+		case(2)			
+		case(3)			
+		case(4)
+		case(5)
+		case(6)
+		case(7)
+		case(8)
+		case(9)
+		case(10)
+			player current cards =+ tmpHold
+			player min cards =+ tmpHold
+			player max cards =+ tmpHold
+			break
+		case(11)
+			player current cards =+ "J "
+			player min cards =+ 10
+			player max cards =+ 10
+			break
+		case(12)
+			player current cards =+ "Q "
+			player min cards =+ 10
+			player max cards =+ 10
+			break
+		case(13)
+			player current cards =+ "K "
+			player min cards =+ 10
+			player max cards =+ 10
+			break
+		default
+			print (error message)		
+END
+		
+		<u>DealDealer</u>
+BEGIN
+	tmpHold = random number
+	switch (tmpHold)
+		case(1)
+			dealer current cards =+ "A "
+			dealer min cards =+ 1
+			dealer max cards =+ 1
+			break
+		case(2)			
+		case(3)			
+		case(4)
+		case(5)
+		case(6)
+		case(7)
+		case(8)
+		case(9)
+		case(10)
+			dealer current cards =+ tmpHold
+			dealer min cards =+ tmpHold
+			dealer max cards =+ tmpHold
+			break
+		case(11)
+			dealer current cards =+ "J "
+			dealer min cards =+ 10
+			dealer max cards =+ 10
+			break
+		case(12)
+			dealer current cards =+ "Q "
+			dealer min cards =+ 10
+			dealer max cards =+ 10
+			break
+		case(13)
+			dealer current cards =+ "K "
+			dealer min cards =+ 10
+			dealer max cards =+ 10
+			break
+		default
+			print (error message)
+END
+	
+<hr /></pre>
+		  </div>
+		  
+		  <div id="DataDct">
+			<table>
+				  <tr>
+						<th width="20%">Type</th>
+						<th width="20%">Scope</th>
+						<th width="20%">Name</th>
+						<th width="40%">Purpose</th>
+				  </tr>
+				  <tr class="def">
+						<td>Scanner</td>
+						<td>clsMenu</td>
+						<td>INPUT</td>
+						<td>Enables user input.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>RESET</td>
+						<td>Final. Holds ANSI escape code to reset text colour back to default</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>RED</td>
+						<td>Final. Holds ANSI escape code to set colour to red.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>GREEN</td>
+						<td>Final. Holds ANSI escape code to set colour to green.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>YELLOW</td>
+						<td>Final. Holds ANSI escape code to set colour to yelow.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>BLUE</td>
+						<td>Final. Holds ANSI escape code to set colour to blue.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>PURPLE</td>
+						<td>Final. Holds ANSI escape code to set colour to purple.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>CYAN</td>
+						<td>Final. Holds ANSI escape code to set colour to cyan.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsMenu</td>
+						<td>strMenu</td>
+						<td>Final. Holds menu display to be printed out.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>Menu()</td>
+						<td>Print</td>
+						<td>Passed parameter. Holds menu display to be printed out.</td>
+				  </tr>
+				  <tr class="def">
+						<td>Integer</td>
+						<td>Menu()</td>
+						<td>Lbound</td>
+						<td>Passed parameter. Holds lowest number to be accepted by the menu.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>Menu()</td>
+						<td>Hbound</td>
+						<td>Passed parameter. Holds highest number to be accepted by the menu.</td>
+				  </tr>
+				  <tr class="def">
+						<td>Integer</td>
+						<td>Menu()</td>
+						<td>tmpReturn</td>
+						<td>Holds user inputted number. Once validated is returned to main()</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>Help()</td>
+						<td>strContent</td>
+						<td>Holds collated data to be printed.</td>
+				  </tr>
+				  <tr class="def">
+						<td>FileInputStream</td>
+						<td>Help()</td>
+						<td>fisHelp</td>
+						<td>Streams data from txt file.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>InputStreamReader</td>
+						<td>Help()</td>
+						<td>reader</td>
+						<td>Reads from fisHelp.</td>
+				  </tr>
+				  <tr class="def">
+						<td>Integer</td>
+						<td>Help()</td>
+						<td>intPos</td>
+						<td>Holds current position within reader.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Char</td>
+						<td>Help()</td>
+						<td>chrMove</td>
+						<td>Takes a char (defined by intPos) from reader to be added to strContent.</td>
+				  </tr>
+				  <tr class="def">
+						<td>Scanner</td>
+						<td>clsGame</td>
+						<td>INPUT</td>
+						<td>Enables user input.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Random</td>
+						<td>clsGame</td>
+						<td>RndNum</td>
+						<td>Enables random number generation.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>RESET</td>
+						<td>Final. Holds ANSI escape code to reset text colour back to default</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>RED</td>
+						<td>Final. Holds ANSI escape code to set colour to red.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>GREEN</td>
+						<td>Final. Holds ANSI escape code to set colour to green.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>YELLOW</td>
+						<td>Final. Holds ANSI escape code to set colour to yelow.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>BLUE</td>
+						<td>Final. Holds ANSI escape code to set colour to blue.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>PURPLE</td>
+						<td>Final. Holds ANSI escape code to set colour to purple.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>CYAN</td>
+						<td>Final. Holds ANSI escape code to set colour to cyan.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>strPlayer</td>
+						<td>Holds the cards that the player currently has.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>clsGame</td>
+						<td>strDealer</td>
+						<td>Holds the cards that the dealer currently has.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer Array</td>
+						<td>clsGame</td>
+						<td>intPlayer[4]</td>
+						<td>Holds the player's current chips, current bet, minimum current card total, 
+					maximum current card total (so that A can be counted as 1 &amp; 11)</td>
+				  </tr>
+				  <tr class="def">
+						<td>Integer Array</td>
+						<td>clsGame</td>
+						<td>intDealer[2]</td>
+						<td>Holds the dealer's minimum current card total and maximum current card total.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>Bet()</td>
+						<td>tmpHold</td>
+						<td>Holds the user's input so that it can be validated.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>FirstPlay()</td>
+						<td>tmpPlayerTotal</td>
+						<td>Holds the player's min/max current card total to be printed. If min &amp; max are same<br>
+					only holds min card total.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>FirstPlay()</td>
+						<td>tmpHold</td>
+						<td>Holds the user's input so that it can be validated.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>SecondPlay()</td>
+						<td>tmpPlayerTotal</td>
+						<td>Holds the player's min/max current card total to be printed. If min &amp; max are same<br>
+					only holds min card total.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>SecondPlay()</td>
+						<td>tmpHold</td>
+						<td>Holds the user's input so that it can be validated.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>DealerPlay()</td>
+						<td>tmpPlayerTotal</td>
+						<td>Holds the player's min/max current card total to be printed. If min &amp; max are same<br>
+					only holds min card total.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>FinalPlay()</td>
+						<td>BlackJack</td>
+						<td>Passed parameter. If 1 player has a blackjack, if 2 dealer has one. Used to decide the winner.</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>FinalPlay()</td>
+						<td>tmpWinner</td>
+						<td>Holds winner and chip total to be printed.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>String</td>
+						<td>Winner()</td>
+						<td>tmpWinner</td>
+						<td>Holds winner and chip total to be returned to FinalPlay().</td>
+				  </tr>
+				  <tr class="def">
+						<td>String</td>
+						<td>Double()</td>
+						<td>tmpPlayerTotal</td>
+						<td>Holds the player's min/max current card total to be printed. If min &amp; max are same<br>
+					only holds min card total.</td>
+				  </tr>
+				  <tr class="alt">
+						<td>Integer</td>
+						<td>DealPlayer()</td>
+						<td>tmpHold</td>
+						<td>Holds generated random number. Used to work out drawn card and update intPlayer[].</td>
+					</tr>
+					<tr class="def">
+						<td>Integer</td>
+						<td>DealDealer()</td>
+						<td>tmpHold</td>
+						<td>Holds generated random number. Used to work out drawn card and update intDealer[].</td>
+					</tr>
+				</table>
+			</div>
+		  
+			<div id="Classes">
+				<table>
+					<tr>
+						<th width="15%">Name</th>
+						<th width="20%">Parameters</th>
+						<th width="10%">Returns</th>
+						<th width="55%">Description</th>
+					</tr>
+					<tr class="def">
+						<td>&nbsp;&nbsp;&nbsp;<u>clsMenu</u></td><td></td><td></td><td></td>
+					</tr>
+					<tr class="alt">
+						<td>main</td>
+						<td>String[] args</td>
+						<td>N/A</td>
+						<td>Gives menu perameters to Menu() and runs a method depending on the returned value.<br /> 
+							Continues to loop until the exit option is selected which finishes the application.</td>
+					</tr>
+					<tr class="def">
+						<td>Menu</td>
+						<td>String (Print), Integer (Lbound), Integer (Hbound) </td>
+						<td>Integer</td>
+						<td>Prints out parameter string and asks for user input, if inputted integer is a digit and 
+							within the bounds set by the two integer parameters then the number is returned to main()</td>
+					</tr>
+					<tr class="alt">
+						<td>Help</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Creates a FileInputStream to a text file that has the content to be printed.  <br /> 
+							Each char from the input stream is taken and saved to a string. <br />
+							When all chars have been copied the string is printed.<br />
+							An exception message is printed if something goes wrong with the input stream. <br />
+							Asks for user input, when inputted ends the method (added to prevent the menu display 
+							from being printed which caused part of the help display to extend off the screen.)</td>
+					</tr>
+					<tr class="def">
+						<td>Info</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Checks if the application can open your default browser.<br />
+							opens a new browser window using the html file stored in the root folder of the java application.  <br />
+							If the browser cant open an exception message will be printed, if the application cannot access 
+							the browser an error message is printed.</td>
+					</tr>
+					<tr class="alt">
+						<td>&nbsp;&nbsp;&nbsp;<u>clsGame</u></td><td></td><td></td><td></td>
+					</tr>
+					<tr class="def">
+						<td>main</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Resets players chips to default and starts the game loop which runs until the user decides to exit.  <br />                                     
+							Runs the Bet() and FirstPlay() methods (which will in turn run the rest of the methods needed for the gameplay)<br />                          
+							When the user has finished their hand, checks if they still have chips, if not game ends, else a message is 
+							displayed asking if they want to play another hand, if the user chooses no the game will end, 
+							returning the player to the main menu.</td>
+					</tr>
+					<tr class="alt">
+						<td>Bet</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Prints how many chips are available and what limits there are to the bet, asks how much the user wants to bet.<br /> 
+							If the inputted amount is valid then it is saved to intPlayer[1], if not valid the user will be asked to enter a value again.</td>
+					</tr>
+					<tr class="def">
+						<td>FirstPlay</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Runs DealPlayer() twice and DealDealer() once so that there are two player and one dealer cards to display.<br />
+							If both of the player card values are the same then just the first is displayed, else both values are displayed.<br />
+							If the player has a blackjack the current card values will be displayed along with a blackjack message, 
+							the FinalPlay() method is ran and the method ends.<br />
+							Otherwise the current card values and player options are displayed and the user is asked to make their choice.<br />
+							Depending on the user input, SecondPlay() or Double() are ran. </td>
+					</tr>
+					<tr class="alt">
+						<td>SecondPlay</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>If both of the player card values are the same then just the first is displayed, else both values are displayed.<br />
+							If the player has gone bust the current card values will be displayed along with a bust message, the 
+							FinalPlay() method is ran and the method ends.<br />
+							Otherwise the current card values and player options are displayed and the user is asked to make their choice. <br />
+							If the user hits then a card is added and the previous step is repeated until they either go bust or stand. <br />
+							If the user stands the FinalPlay method is ran and the method ends.</td>
+					</tr>
+					<tr class="def">
+						<td>DealperPlay</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>The dealer draws cards until either card total is 17 or over.<br />
+							If both of the player card values are the same then just the first is displayed, else both values are 
+							displayed. All card details are displayed and the method ends.</td>
+					</tr>
+					<tr class="alt">
+						<td>FinalPlay</td>
+						<td>Integer (Blackjack)</td>
+						<td>N/A</td>
+						<td>If the player or dealer have a BlackJack the respective Win/lose/draw message is saved to tmpWinner and 
+						new chip total saved to intPlayer.<br />
+						If there is no BlackJack then Winner is ran and the returned string saved to tmpWinner.<br />
+						tmpWinner and the chip total is displayed and all card totals are reset. The method ends (moves to if statement in main())</td>
+					</tr>
+					<tr class="def">
+						<td>Winner</td>
+						<td>N/A</td>
+						<td>String</td>
+						<td>Works out if the user has won/lost/drawn with the dealer via a nested if statement that (should) contain 
+						all possible variations of cards.<br />
+						Win()/Lose()/Draw() ran depending on result, returned value returned to FinalPlay()</td>
+					</tr>
+					<tr class="alt">
+						<td>Win</td>
+						<td>N/A</td>
+						<td>String</td>
+						<td>Changes Chip total and returns the string to be printed.</td>
+					</tr>
+					<tr class="def">
+						<td>Lose</td>
+						<td>N/A</td>
+						<td>String</td>
+						<td>Changes Chip total and returns the string to be printed.</td>
+					</tr>
+					<tr class="alt">
+						<td>Draw</td>
+						<td>N/A</td>
+						<td>String</td>
+						<td>Returns the string to be printed.</td>
+					</tr>
+					<tr class="def">
+						<td>Double</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Deals the player one cardIf both of the player card values are the same then just the first is displayed, 
+							else both values are displayed.<br />
+							If the player has gone bust the current card values will be displayed along with a bust message, the 
+							FinalPlay() method is ran and the method ends.<br />
+							Otherwise the DealerPlay() and FinalPlay() methods are ran.</td>
+					</tr>
+					<tr class="alt">
+						<td>DealPlayer</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Generates a random number between 1 and 13. The card value is added to the player card totals (10 for 
+							face cards, 1 & 10 to total 1 and 2 respectively if A) <br />
+							Card number or letter is added to strPlayer.</td>
+					</tr>
+					<tr class="def">
+						<td>DealDealer</td>
+						<td>N/A</td>
+						<td>N/A</td>
+						<td>Generates a random number between 1 and 13. The card value is added to the player card totals (10 for 
+							face cards, 1 & 10 to total 1 and 2 respectively if A) <br />
+							Card number or letter is added to strDealer.</td>
+					</tr>
+					
+				</table>
+			</div>
+		  
+			
+		</div>
+		
+	</body>
+</html>

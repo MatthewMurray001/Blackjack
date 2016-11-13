@@ -69,7 +69,7 @@ public class clsMenu
                         Help();
                         break;
 
-                case 3: //More Info
+                case 3: //Documentation
                         Info();
                         break;
 

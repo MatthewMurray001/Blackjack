@@ -1,0 +1,41 @@
+
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| The first option is how much you want to bet on the |
+| upcoming hand. You can bet anywhere between 1 chip  |
+| and 50 chips, if the amount of chips you have is    |
+| lower than 50 the maximum that you can bet is the   |
+| amount of chips you have left.                      |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| The dealer's first card and your first two cards    |
+| will be dealt, you now have the option to either;   |
+|     Hit - draw another card.                        |
+|   Stand - keep your cards and move on.              |
+|  Double - double the amount of your bet, draw one   |
+|           card, and then move on.                   |
+| if you choose to Hit, you can continue to hit until |
+| you either have a card total of over 21, or until   |
+| you chose to Stand.                                 |
+| Choosing to double can only be done as the first    |
+| action of your turn.                                |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| The dealer will now draw his second card.           |
+| You can either;                                     |
+|     Hit - Draw another card.                        |
+|   Stand - keep your cards and move on.              |
+| if you choose to Hit, you can continue to hit until |
+| you either have a card total of over 21, or until   |
+| you chose to Stand.                                 |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| The dealer will now continue to draw cards until    |
+| they have a card total of over 17 or until they have|
+| a total of over 21, in which case they lose the     |
+| round.                                              | 
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| Both your cards and the dealer's cards are compared,|
+| and the player closest to 21 wins the hand. If      |
+| either the player or the dealer goes above 21, the  |
+| other player wins the hand.                         |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
+| The ace (A) can either be counted as 1 or 10.       |
+| All face cards (J,Q,K) are counted as 10.           |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - -|
